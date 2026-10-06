@@ -1,6 +1,3 @@
-Here is the complete, ready-to-copy `audio.js` file with the mobile audio fixes included:
-
-```javascript
 let audioCtx = null;
 let noiseNode = null, filterNode = null, gainNode = null, lfo = null, lfoGain = null;
 let isPlaying = false;
@@ -8,12 +5,12 @@ let isPlaying = false;
 let lofiPlaying = false;
 let lofiInterval = null;
 
-export async function toggleAudio(onStateChange) {
+export function toggleAudio(onStateChange) {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
     if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
+        audioCtx.resume();
     }
 
     if (isPlaying) {
@@ -86,13 +83,15 @@ export function adjustVolume(val) {
     }
 }
 
-export async function toggleLofi(onStateChange) {
+export function toggleLofi(onStateChange) {
     lofiPlaying = !lofiPlaying;
     
     if (lofiPlaying) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
         if (audioCtx.state === 'suspended') {
-            await audioCtx.resume();
+            audioCtx.resume();
         }
         
         playLofiChord();
@@ -134,5 +133,3 @@ function playLofiChord() {
         }, idx * 120);
     });
 }
-
-```
