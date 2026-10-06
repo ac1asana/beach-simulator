@@ -1,40 +1,61 @@
-import { initWaves } from './waves.js';
-import { toggleAudio, adjustVolume, toggleLofi } from './audio.js';
 import { state, cycleWeather, spawnSeashell, interactCharacter, selectDrink, toggleUmbrella, openMenu, closeMenu, resetProgress } from './game.js';
+import { toggleAudio, toggleLofi, adjustVolume } from './audio.js';
+import { initWaves } from './waves.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
+    // Initialize background ocean waves canvas
     initWaves(() => state);
 
-    setInterval(spawnSeashell, 4000);
+    // Spawn seashells periodically
+    setInterval(spawnSeashell, 3500);
 
-    document.getElementById('soundToggleBtn').addEventListener('click', () => {
-        toggleAudio((isPlaying) => {
-            document.getElementById('soundIcon').innerText = isPlaying ? '🔊' : '🔇';
-        });
-    });
+    // Character tap interaction
+    document.getElementById('characterWrapper').addEventListener('click', interactCharacter);
 
-    document.getElementById('settingsBtn').addEventListener('click', () => openMenu('settingsModal'));
-    document.getElementById('closeSettingsModal').addEventListener('click', () => closeMenu('settingsModal'));
-    
+    // Weather / Time cycle button
+    document.getElementById('weatherBtn').addEventListener('click', cycleWeather);
+
+    // Umbrella toggle button
+    document.getElementById('umbrellaToggleBtn').addEventListener('click', toggleUmbrella);
+
+    // Drink Menu Modal Controls
     document.getElementById('drinkMenuBtn').addEventListener('click', () => openMenu('drinkModal'));
     document.getElementById('closeDrinkModal').addEventListener('click', () => closeMenu('drinkModal'));
 
-    document.getElementById('weatherBtn').addEventListener('click', cycleWeather);
-    document.getElementById('umbrellaToggleBtn').addEventListener('click', toggleUmbrella);
-    
-    document.getElementById('lofiToggleBtn').addEventListener('click', () => {
-        toggleLofi((lofiPlaying) => {
-            document.getElementById('lofiIcon').style.transform = lofiPlaying ? 'scale(1.2) rotate(10deg)' : 'scale(1)';
+    document.querySelectorAll('.drink-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const name = btn.getAttribute('data-name');
+            const color = btn.getAttribute('data-color');
+            const icon = btn.getAttribute('data-icon');
+            selectDrink(name, color, icon);
         });
     });
 
-    document.getElementById('characterWrapper').addEventListener('click', interactCharacter);
-    document.getElementById('volumeSlider').addEventListener('input', (e) => adjustVolume(e.target.value));
+    // Settings Modal Controls
+    document.getElementById('settingsBtn').addEventListener('click', () => openMenu('settingsModal'));
+    document.getElementById('closeSettingsModal').addEventListener('click', () => closeMenu('settingsModal'));
     document.getElementById('resetProgressBtn').addEventListener('click', resetProgress);
 
-    document.querySelectorAll('.drink-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-            selectDrink(btn.dataset.name, btn.dataset.color, btn.dataset.icon);
+    // Volume slider control
+    const volumeSlider = document.getElementById('volumeSlider');
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+            adjustVolume(e.target.value);
+        });
+    }
+
+    // Audio Toggles (Using standard 'click' for optimal mobile browser audio unlocking gesture compliance)
+    document.getElementById('lofiToggleBtn').addEventListener('click', () => {
+        toggleLofi((isPlaying) => {
+            const icon = document.getElementById('lofiIcon');
+            icon.innerText = isPlaying ? '⏸️' : '🎶';
+        });
+    });
+
+    document.getElementById('soundToggleBtn').addEventListener('click', () => {
+        toggleAudio((isPlaying) => {
+            const icon = document.getElementById('soundIcon');
+            icon.innerText = isPlaying ? '🔊' : '🔇';
         });
     });
 });

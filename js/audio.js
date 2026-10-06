@@ -9,6 +9,7 @@ export function toggleAudio(onStateChange) {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
+    // Must be synchronous for mobile browsers to accept the user gesture unlock
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
     }
