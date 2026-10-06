@@ -27,12 +27,12 @@ export function cycleWeather() {
     document.getElementById('weatherBtnIcon').innerText = cfg.icon;
     
     const skyZone = document.getElementById('skyZone');
-    skyZone.className = `w-full h-[44%] bg-gradient-to-b ${cfg.sky} relative overflow-hidden transition-all duration-1000`;
+    skyZone.className = `w-full h-[44%] bg-gradient-to-b ${cfg.sky} relative overflow-hidden transition-all duration-1000 pointer-events-none`;
     
     const celestial = document.getElementById('celestialBody');
     celestial.className = `absolute top-8 right-12 w-16 h-16 rounded-full shadow-2xl transition-all duration-1000 ${cfg.sunBg}`;
     
-    document.getElementById('oceanZone').className = `w-full h-[26%] relative ${cfg.ocean} transition-colors duration-1000`;
+    document.getElementById('oceanZone').className = `w-full h-[26%] relative ${cfg.ocean} transition-colors duration-1000 pointer-events-none`;
     document.getElementById('appBody').style.backgroundColor = cfg.body;
 
     const stars = document.getElementById('starsOverlay');
@@ -46,15 +46,13 @@ export function spawnSeashell() {
     if (!area || area.children.length >= 4) return;
 
     const shell = document.createElement('div');
-    // Added z-40 so it sits cleanly above background layers
-    shell.className = 'absolute text-2xl cursor-pointer transform hover:scale-125 transition active:scale-95 animate-bounce z-40';
+    shell.className = 'absolute text-2xl cursor-pointer pointer-events-auto transform hover:scale-125 transition active:scale-95 animate-bounce z-50';
     shell.style.left = (Math.random() * 80 + 10) + '%';
-    shell.style.bottom = (Math.random() * 50 + 15) + '%';
+    shell.style.bottom = (Math.random() * 25 + 5) + '%';
     
     const icons = ['🐚', '⭐', '🦀', '💎'];
     shell.innerText = icons[Math.floor(Math.random() * icons.length)];
     
-    // Use pointerdown for instant and reliable mobile/desktop tap detection
     shell.addEventListener('pointerdown', (e) => {
         e.stopPropagation();
         state.shellCount++;

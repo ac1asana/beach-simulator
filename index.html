@@ -48,13 +48,12 @@
             <canvas id="waveCanvas" class="absolute inset-0 w-full h-full block"></canvas>
         </div>
 
-        <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000 pointer-events-auto">
-            <div id="shellSpawnArea" class="absolute inset-0 z-30 pointer-events-auto"></div>
+        <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000">
             <div class="absolute top-4 left-12 w-4 h-2 bg-amber-300/60 rounded-full"></div>
         </div>
     </div>
 
-    <!-- Main Interactive Scene (Includes Character and Umbrella) -->
+    <!-- Main Interactive Scene -->
     <main class="relative z-30 flex-grow flex flex-col justify-center items-center w-full max-w-md px-4 pb-12 pointer-events-none">
         <div class="relative w-full flex justify-center items-end h-72 pointer-events-auto">
             
@@ -185,6 +184,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Global Seashell Click Layer (Sits above everything so clicks never fail) -->
+    <div id="shellSpawnArea" class="absolute inset-0 z-40 pointer-events-none"></div>
 
     <script type="module" src="js/main.js"></script>
 </body>
