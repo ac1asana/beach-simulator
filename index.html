@@ -33,8 +33,8 @@
         </div>
     </header>
 
-    <!-- Background Environment -->
-    <div id="envContainer" class="absolute inset-0 z-0 flex flex-col pointer-events-none transition-all duration-1000">
+    <!-- Background Environment (Restored to z-20 so it renders properly behind UI/characters) -->
+    <div id="envContainer" class="absolute inset-0 z-20 flex flex-col pointer-events-none transition-all duration-1000">
         <div id="skyZone" class="w-full h-[44%] bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100 relative overflow-hidden transition-all duration-1000">
             <div id="celestialBody" class="absolute top-8 right-12 w-16 h-16 bg-amber-300 rounded-full shadow-2xl transition-all duration-1000"></div>
             <div id="starsOverlay" class="absolute inset-0 opacity-0 transition-opacity duration-1000 pointer-events-none">
@@ -49,14 +49,14 @@
         </div>
 
         <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000">
-            <div id="shellSpawnArea" class="absolute inset-0 z-10 pointer-events-auto"></div>
+            <div id="shellSpawnArea" class="absolute inset-0 z-30 pointer-events-auto"></div>
             <div class="absolute top-4 left-12 w-4 h-2 bg-amber-300/60 rounded-full"></div>
         </div>
     </div>
 
     <!-- Main Interactive Scene -->
-    <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md px-4 pb-12">
-        <div class="relative w-full flex justify-center items-end h-72">
+    <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md px-4 pb-12 pointer-events-none">
+        <div class="relative w-full flex justify-center items-end h-72 pointer-events-auto">
             
             <div id="umbrella" class="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-36 z-0 transition-transform duration-500">
                 <div class="w-full h-28 bg-gradient-to-r from-rose-400 via-amber-200 to-rose-400 rounded-t-full shadow-xl relative overflow-hidden border-b-4 border-rose-600">
@@ -106,7 +106,7 @@
     </main>
 
     <!-- Bottom Control Bar -->
-    <footer class="w-full pb-safe pb-4 px-4 z-30 flex flex-col items-center space-y-2">
+    <footer class="w-full pb-safe pb-4 px-4 z-30 flex flex-col items-center space-y-2 pointer-events-auto">
         <div class="w-full max-w-md bg-white p-3 rounded-2xl shadow-xl border border-gray-300 flex justify-around items-center">
             
             <button id="drinkMenuBtn" class="flex flex-col items-center space-y-1 active:scale-95 transition-all text-sky-900">
@@ -186,6 +186,7 @@
         </div>
     </div>
 
+    <!-- Ensure your script path matches your folder structure (e.g., js/main.js or javascript/main.js) -->
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
