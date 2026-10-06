@@ -46,14 +46,16 @@ export function spawnSeashell() {
     if (!area || area.children.length >= 4) return;
 
     const shell = document.createElement('div');
-    shell.className = 'absolute text-xl cursor-pointer transform hover:scale-125 transition active:scale-95 animate-bounce';
-    shell.style.left = (Math.random() * 85 + 5) + '%';
-    shell.style.bottom = (Math.random() * 60 + 10) + '%';
+    // Added z-40 so it sits cleanly above background layers
+    shell.className = 'absolute text-2xl cursor-pointer transform hover:scale-125 transition active:scale-95 animate-bounce z-40';
+    shell.style.left = (Math.random() * 80 + 10) + '%';
+    shell.style.bottom = (Math.random() * 50 + 15) + '%';
     
     const icons = ['🐚', '⭐', '🦀', '💎'];
     shell.innerText = icons[Math.floor(Math.random() * icons.length)];
     
-    shell.onclick = (e) => {
+    // Use pointerdown for instant and reliable mobile/desktop tap detection
+    shell.addEventListener('pointerdown', (e) => {
         e.stopPropagation();
         state.shellCount++;
         document.getElementById('shellCount').innerText = state.shellCount;
@@ -61,7 +63,7 @@ export function spawnSeashell() {
         
         showFloatingFX(e.clientX, e.clientY, '+1 🐚');
         shell.remove();
-    };
+    });
 
     area.appendChild(shell);
     setTimeout(() => { if (shell.parentElement) shell.remove(); }, 8000);
