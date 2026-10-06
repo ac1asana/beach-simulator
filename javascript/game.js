@@ -103,7 +103,6 @@ export function toggleUmbrella() {
     state.umbrellaOpen = !state.umbrellaOpen;
     const umbrella = document.getElementById('umbrella');
     umbrella.style.transform = state.umbrellaOpen ? 'translateX(-50%) scale(1)' : 'translateX(-50%) scale(0) translateY(50px)';
-    document.getElementById('umbrellaBtnIcon').innerText = state.umbrellaOpen ? '⛱️' : '☀️';
     showTip(state.umbrellaOpen ? 'Umbrella opened for shade ⛱️' : 'Soaking up the warm sun ☀️');
 }
 
