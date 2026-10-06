@@ -1,230 +1,173 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Cozy Beach Simulator - Ultimate Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Beach Simulator</title>
+    <!-- Tailwind CSS loaded via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body id="appBody" class="flex flex-col justify-between items-center h-full w-full relative select-none">
+<body id="appBody" class="flex flex-col justify-between items-center h-full w-full relative select-none font-['Fredoka']">
 
-    <!-- Top Navigation / Status Bar -->
-    <header class="w-full pt-safe px-4 pt-3 flex justify-between items-center z-30">
-        <!-- Title & Time Pill -->
-        <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-lg border border-white/50 flex items-center space-x-2">
-            <span id="timeIcon" class="text-lg">☀️</span>
-            <span id="timeLabel" class="text-sky-900 dark:text-sky-200 font-semibold text-xs sm:text-sm tracking-wide">Day Mode</span>
+    <!-- Top Bar -->
+    <header class="w-full px-4 pt-3 flex justify-between items-center z-30">
+        <div class="bg-white px-3 py-1 rounded shadow border border-gray-300 flex items-center space-x-2">
+            <span id="timeIcon">sun</span>
+            <span id="timeLabel" class="text-sky-900 font-semibold text-sm">Day</span>
         </div>
 
-        <!-- Shell Coin Counter & Action Buttons -->
         <div class="flex items-center space-x-2">
-            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-white/50 flex items-center space-x-1.5">
-                <span>🐚</span>
-                <span id="shellCount" class="text-amber-700 dark:text-amber-400 font-bold text-xs sm:text-sm">0</span>
+            <div class="bg-white px-3 py-1 rounded shadow border border-gray-300 flex items-center space-x-1">
+                <span>shells:</span>
+                <span id="shellCount" class="font-bold text-amber-700">0</span>
             </div>
             
-            <button onclick="toggleAudio()" class="bg-white/90 dark:bg-slate-900/90 active:scale-95 transition-all text-sky-800 dark:text-sky-200 p-2 rounded-full shadow-lg border border-white/50 flex items-center justify-center">
-                <span id="soundIcon" class="text-base">🔇</span>
+            <button onclick="toggleAudio()" class="bg-white text-sky-800 px-3 py-1 rounded shadow border border-gray-300">
+                <span id="soundIcon">sound off</span>
             </button>
 
-            <button onclick="openMenu('settingsModal')" class="bg-white/90 dark:bg-slate-900/90 active:scale-95 transition-all text-sky-800 dark:text-sky-200 p-2 rounded-full shadow-lg border border-white/50 flex items-center justify-center">
-                <span class="text-base">⚙️</span>
+            <button onclick="openMenu('settingsModal')" class="bg-white text-sky-800 px-3 py-1 rounded shadow border border-gray-300">
+                <span>settings</span>
             </button>
         </div>
     </header>
 
-    <!-- Background Environment (Sky, Sun/Moon, Seagulls, Canvas Waves, Sand) -->
-    <div id="envContainer" class="absolute inset-0 z-0 flex flex-col pointer-events-none transition-all duration-1000">
-        <!-- Sky & Celestial Gradient -->
-        <div id="skyZone" class="w-full h-[44%] bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100 relative overflow-hidden transition-all duration-1000">
-            <!-- Sun / Moon element -->
-            <div id="celestialBody" class="absolute top-8 right-12 w-16 h-16 bg-amber-300 rounded-full shadow-2xl transition-all duration-1000"></div>
-            <!-- Starry overlay for night -->
-            <div id="starsOverlay" class="absolute inset-0 opacity-0 transition-opacity duration-1000 pointer-events-none">
-                <div class="absolute top-6 left-12 text-white text-xs sparkle-star">✨</div>
-                <div class="absolute top-14 left-1/3 text-white text-sm sparkle-star" style="animation-delay: 0.5s;">⭐</div>
-                <div class="absolute top-8 right-1/4 text-white text-xs sparkle-star" style="animation-delay: 1s;">✨</div>
+    <!-- Background Environment -->
+    <div id="envContainer" class="absolute inset-0 z-0 flex flex-col pointer-events-none">
+        <div id="skyZone" class="w-full h-[44%] bg-sky-300 relative overflow-hidden">
+            <div id="celestialBody" class="absolute top-8 right-12 w-16 h-16 bg-yellow-200 rounded-full"></div>
+            <div id="starsOverlay" class="absolute inset-0 opacity-0 pointer-events-none">
+                <div class="absolute top-6 left-12 text-white text-xs">.</div>
+                <div class="absolute top-14 left-1/3 text-white text-sm">.</div>
             </div>
-            <!-- Seagulls -->
-            <div class="absolute top-10 seagull text-amber-900/30 dark:text-white/30 text-xs tracking-widest">v v</div>
+            <div class="absolute top-10 text-gray-500 text-xs">v v</div>
         </div>
 
-        <!-- Ocean Canvas Layer -->
-        <div class="w-full h-[26%] relative bg-sky-400 transition-colors duration-1000" id="oceanZone">
+        <div class="w-full h-[26%] relative bg-sky-400" id="oceanZone">
             <canvas id="waveCanvas" class="absolute inset-0 w-full h-full block"></canvas>
         </div>
 
-        <!-- Sandy Beach Ground -->
-        <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000">
-            <!-- Interactive Seashell Spawn Area -->
+        <div id="sandZone" class="w-full h-[30%] bg-amber-100 relative">
             <div id="shellSpawnArea" class="absolute inset-0 z-10 pointer-events-auto"></div>
-            <!-- Sand Dunes Texture -->
-            <div class="absolute top-4 left-12 w-4 h-2 bg-amber-300/60 rounded-full"></div>
-            <div class="absolute top-10 right-20 w-6 h-2.5 bg-amber-300/50 rounded-full"></div>
+            <div class="absolute top-4 left-12 w-4 h-2 bg-amber-200 rounded"></div>
         </div>
     </div>
 
-    <!-- Main Interactive Scene (Character, Bench, Umbrella) -->
+    <!-- Main Scene -->
     <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md px-4 pb-12">
-        
-        <!-- Interactive Container -->
         <div class="relative w-full flex justify-center items-end h-72">
             
-            <!-- Beach Umbrella -->
-            <div id="umbrella" class="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-36 z-0 transition-transform duration-500">
-                <div class="w-full h-28 bg-gradient-to-r from-rose-400 via-amber-200 to-rose-400 rounded-t-full shadow-xl relative overflow-hidden border-b-4 border-rose-600">
+            <!-- Umbrella -->
+            <div id="umbrella" class="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-36 z-0">
+                <div class="w-full h-28 bg-rose-400 rounded-t-full relative overflow-hidden border-b-4 border-rose-600">
                     <div class="absolute inset-0 flex justify-around opacity-40">
-                        <div class="w-8 h-full bg-rose-600"></div>
-                        <div class="w-8 h-full bg-rose-600"></div>
                         <div class="w-8 h-full bg-rose-600"></div>
                         <div class="w-8 h-full bg-rose-600"></div>
                     </div>
                 </div>
-                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-36 bg-amber-900 rounded-b shadow-md"></div>
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-36 bg-amber-900"></div>
             </div>
 
-            <!-- Floating Reaction FX Container -->
             <div id="fxContainer" class="absolute -top-10 left-1/2 -translate-x-1/2 z-30 pointer-events-none"></div>
 
-            <!-- Character & Bench Wrapper -->
-            <div id="characterWrapper" class="relative z-10 flex flex-col items-center cursor-pointer transform transition-transform active:scale-95" onclick="interactCharacter()">
+            <!-- Character Wrapper -->
+            <div id="characterWrapper" class="relative z-10 flex flex-col items-center cursor-pointer" onclick="interactCharacter()">
                 
-                <!-- Wooden Beach Bench -->
-                <div class="absolute -bottom-4 w-56 h-8 bg-amber-800 rounded-md shadow-lg border-b-4 border-amber-950 flex justify-between px-3 items-center">
-                    <div class="w-3 h-10 bg-amber-950 rounded-b -bottom-8 absolute left-4"></div>
-                    <div class="w-3 h-10 bg-amber-950 rounded-b -bottom-8 absolute right-4"></div>
+                <div class="absolute -bottom-4 w-56 h-8 bg-amber-800 rounded flex justify-between px-3 items-center">
+                    <div class="w-3 h-10 bg-amber-950 -bottom-8 absolute left-4"></div>
+                    <div class="w-3 h-10 bg-amber-950 -bottom-8 absolute right-4"></div>
                 </div>
 
-                <!-- Cute Cartoon Character -->
                 <div id="cartoonChar" class="relative flex flex-col items-center">
-                    
-                    <!-- Head & Ears -->
-                    <div class="relative w-28 h-24 bg-amber-200 rounded-full shadow-md border-2 border-amber-800 flex flex-col items-center justify-center animate-blink">
-                        <div class="absolute -top-2 -left-2 w-8 h-8 bg-amber-300 rounded-full border-2 border-amber-800"></div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-amber-300 rounded-full border-2 border-amber-800"></div>
+                    <div class="relative w-28 h-24 bg-amber-200 rounded-full border-2 border-amber-800 flex flex-col items-center justify-center">
+                        <div class="absolute -top-2 -left-2 w-8 h-8 bg-amber-300 rounded-full border border-amber-800"></div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-amber-300 rounded-full border border-amber-800"></div>
                         
-                        <!-- Sunglasses -->
                         <div class="flex space-x-2 items-center mt-1">
-                            <div class="w-8 h-6 bg-slate-900 rounded-md border border-amber-900 flex items-center justify-end pr-1 shadow-inner">
-                                <div class="w-2 h-2 bg-white rounded-full opacity-80"></div>
-                            </div>
-                            <div class="w-8 h-6 bg-slate-900 rounded-md border border-amber-900 flex items-center justify-end pr-1 shadow-inner">
-                                <div class="w-2 h-2 bg-white rounded-full opacity-80"></div>
-                            </div>
+                            <div class="w-8 h-6 bg-black rounded"></div>
+                            <div class="w-8 h-6 bg-black rounded"></div>
                         </div>
-                        <div class="w-3 h-1 bg-slate-900 absolute top-9"></div>
 
-                        <!-- Snout & Smile -->
-                        <div class="w-10 h-7 bg-amber-100 rounded-full mt-2 border border-amber-700/40 flex flex-col items-center justify-center">
+                        <div class="w-10 h-7 bg-amber-100 rounded-full mt-2 flex flex-col items-center justify-center">
                             <div class="w-3 h-2 bg-amber-900 rounded-full"></div>
                             <div id="smileLine" class="w-4 h-1.5 border-b-2 border-amber-900 rounded-full"></div>
                         </div>
                     </div>
 
-                    <!-- Body & Swimsuit / Drink -->
-                    <div class="relative w-32 h-20 bg-teal-400 rounded-t-3xl shadow-md border-2 border-teal-700 flex items-center justify-center -mt-3">
-                        <div class="absolute text-teal-700 text-xs opacity-60">🌺 🌴 🌺</div>
-                        
-                        <!-- Right Paw Holding Drink -->
-                        <div class="absolute right-2 -top-2 w-8 h-8 bg-amber-200 rounded-full border-2 border-amber-800 shadow animate-sip flex items-center justify-center">
-                            <div class="relative w-6 h-8 bg-amber-600 rounded-b-lg border border-amber-900 flex flex-col items-center overflow-hidden">
-                                <div id="drinkLiquid" class="absolute bottom-0 w-full h-5 bg-pink-400 transition-colors duration-500"></div>
-                                <div class="absolute -top-3 right-0 w-1 h-5 bg-yellow-300 rotate-12"></div>
-                                <div class="absolute -top-2 -left-1 text-[8px]">☂️</div>
+                    <div class="relative w-32 h-20 bg-teal-400 rounded-t-3xl border-2 border-teal-700 flex items-center justify-center -mt-3">
+                        <div class="absolute right-2 -top-2 w-8 h-8 bg-amber-200 rounded-full border-2 border-amber-800 flex items-center justify-center">
+                            <div class="relative w-6 h-8 bg-amber-600 rounded-b-lg flex flex-col items-center overflow-hidden">
+                                <div id="drinkLiquid" class="absolute bottom-0 w-full h-5 bg-pink-400"></div>
                             </div>
                         </div>
-
-                        <!-- Left Paw -->
-                        <div class="absolute left-2 top-2 w-7 h-7 bg-amber-200 rounded-full border-2 border-amber-800 shadow"></div>
+                        <div class="absolute left-2 top-2 w-7 h-7 bg-amber-200 rounded-full border-2 border-amber-800"></div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </main>
 
-    <!-- Bottom Control Bar -->
-    <footer class="w-full pb-safe pb-4 px-4 z-30 flex flex-col items-center space-y-2">
-        <div class="w-full max-w-md bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-white/50 flex justify-around items-center">
+    <!-- Bottom Controls -->
+    <footer class="w-full pb-4 px-4 z-30 flex flex-col items-center space-y-2">
+        <div class="w-full max-w-md bg-white p-3 rounded shadow border border-gray-300 flex justify-around items-center">
             
-            <button onclick="openMenu('drinkModal')" class="flex flex-col items-center space-y-1 active:scale-95 transition-all text-sky-900 dark:text-sky-200">
-                <span class="text-2xl">🍹</span>
-                <span class="text-[10px] font-semibold">Drinks</span>
+            <button onclick="openMenu('drinkModal')" class="flex flex-col items-center text-sky-900">
+                <span class="text-sm font-semibold">Drinks</span>
             </button>
 
-            <button onclick="cycleWeather()" class="flex flex-col items-center space-y-1 active:scale-95 transition-all text-sky-900 dark:text-sky-200">
-                <span id="weatherBtnIcon" class="text-2xl">🌅</span>
-                <span id="weatherBtnLabel" class="text-[10px] font-semibold">Time</span>
+            <button onclick="cycleWeather()" class="flex flex-col items-center text-sky-900">
+                <span id="weatherBtnLabel" class="text-sm font-semibold">Time</span>
             </button>
 
-            <button onclick="toggleUmbrella()" class="flex flex-col items-center space-y-1 active:scale-95 transition-all text-sky-900 dark:text-sky-200">
-                <span id="umbrellaBtnIcon" class="text-2xl">⛱️</span>
-                <span class="text-[10px] font-semibold">Umbrella</span>
+            <button onclick="toggleUmbrella()" class="flex flex-col items-center text-sky-900">
+                <span class="text-sm font-semibold">Umbrella</span>
             </button>
 
-            <button onclick="toggleLofi()" class="flex flex-col items-center space-y-1 active:scale-95 transition-all text-sky-900 dark:text-sky-200">
-                <span id="lofiIcon" class="text-2xl">🎶</span>
-                <span class="text-[10px] font-semibold">Lofi Chill</span>
+            <button onclick="toggleLofi()" class="flex flex-col items-center text-sky-900">
+                <span class="text-sm font-semibold">Music</span>
             </button>
-
         </div>
 
-        <div class="bg-white/70 dark:bg-slate-900/70 backdrop-blur-md px-4 py-1.5 rounded-full shadow border border-white/50">
-            <p id="tipText" class="text-sky-900 dark:text-sky-200 text-xs font-medium text-center">✨ Tap character, sip drinks, & collect seashells! ✨</p>
+        <div class="bg-white px-4 py-1 rounded shadow border border-gray-300">
+            <p id="tipText" class="text-sky-900 text-xs text-center">Click character, pick drinks, collect shells.</p>
         </div>
     </footer>
 
-    <!-- Drink Selection Modal -->
-    <div id="drinkModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl border border-white/20 transform transition-all">
+    <!-- Drink Modal -->
+    <div id="drinkModal" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded p-6 shadow-xl border border-gray-300">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-sky-900 dark:text-white">🍹 Choose Your Drink</h3>
-                <button onclick="closeMenu('drinkModal')" class="text-gray-400 hover:text-gray-600 text-xl font-bold px-2">✕</button>
+                <h3 class="text-lg font-bold text-sky-900">Choose Drink</h3>
+                <button onclick="closeMenu('drinkModal')" class="font-bold">X</button>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="selectDrink('Tropical Pink', '#f43f5e', '🍹')" class="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition">
-                    <span class="text-2xl">🍹</span>
-                    <div class="text-left"><p class="font-bold text-sm text-rose-900 dark:text-rose-200">Tropical Punch</p><p class="text-[10px] text-rose-700 dark:text-rose-400">Sweet & Fruity</p></div>
+                <button onclick="selectDrink('Tropical Pink', '#f43f5e', 'drink')" class="p-3 bg-gray-50 border rounded text-left">
+                    <p class="font-bold text-sm">Tropical Punch</p>
                 </button>
-                <button onclick="selectDrink('Blue Lagoon', '#0ea5e9', '🥤')" class="p-3 bg-sky-50 dark:bg-sky-950/40 border border-sky-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition">
-                    <span class="text-2xl">🥤</span>
-                    <div class="text-left"><p class="font-bold text-sm text-sky-900 dark:text-sky-200">Blue Lagoon</p><p class="text-[10px] text-sky-700 dark:text-sky-400">Crisp & Refreshing</p></div>
-                </button>
-                <button onclick="selectDrink('Coconut Milk', '#fef08a', '🥥')" class="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition">
-                    <span class="text-2xl">🥥</span>
-                    <div class="text-left"><p class="font-bold text-sm text-amber-900 dark:text-amber-200">Coconut Water</p><p class="text-[10px] text-amber-700 dark:text-amber-400">Natural & Cool</p></div>
-                </button>
-                <button onclick="selectDrink('Sunshine Citrus', '#f97316', '🧃')" class="p-3 bg-orange-50 dark:bg-orange-950/40 border border-orange-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition">
-                    <span class="text-2xl">🧃</span>
-                    <div class="text-left"><p class="font-bold text-sm text-orange-900 dark:text-orange-200">Iced Lemonade</p><p class="text-[10px] text-orange-700 dark:text-orange-400">Zesty & Bright</p></div>
+                <button onclick="selectDrink('Blue Lagoon', '#0ea5e9', 'drink')" class="p-3 bg-gray-50 border rounded text-left">
+                    <p class="font-bold text-sm">Blue Lagoon</p>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl border border-white/20">
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded p-6 shadow-xl border border-gray-300">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-sky-900 dark:text-white">⚙️ Beach Settings</h3>
-                <button onclick="closeMenu('settingsModal')" class="text-gray-400 hover:text-gray-600 text-xl font-bold px-2">✕</button>
+                <h3 class="text-lg font-bold text-sky-900">Settings</h3>
+                <button onclick="closeMenu('settingsModal')" class="font-bold">X</button>
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Wave Ocean Volume</label>
-                    <input type="range" min="0" max="1" step="0.05" value="0.35" oninput="adjustVolume(this.value)" class="w-full mt-1 accent-sky-500">
+                    <label class="text-xs font-semibold text-gray-700">Volume</label>
+                    <input type="range" min="0" max="1" step="0.05" value="0.35" oninput="adjustVolume(this.value)" class="w-full mt-1">
                 </div>
-                <div class="pt-2 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                    <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Seashells Collected</span>
-                    <span id="statsShells" class="font-bold text-amber-600">0</span>
-                </div>
-                <div class="pt-2">
-                    <button onclick="resetProgress()" class="w-full py-2.5 bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 rounded-xl font-bold text-xs">Reset All Progress</button>
+                <div>
+                    <button onclick="resetProgress()" class="w-full py-2 bg-red-100 text-red-700 rounded font-bold text-xs">Reset Progress</button>
                 </div>
             </div>
         </div>
@@ -233,5 +176,5 @@
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
+
 ```
-eof
