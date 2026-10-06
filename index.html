@@ -33,8 +33,8 @@
         </div>
     </header>
 
-    <!-- Background Environment -->
-    <div id="envContainer" class="absolute inset-0 z-0 flex flex-col pointer-events-none transition-all duration-1000">
+    <!-- Background Environment (z-20 ensures it sits properly for click interception on shells) -->
+    <div id="envContainer" class="absolute inset-0 z-20 flex flex-col pointer-events-none transition-all duration-1000">
         <div id="skyZone" class="w-full h-[44%] bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100 relative overflow-hidden transition-all duration-1000">
             <div id="celestialBody" class="absolute top-8 right-12 w-16 h-16 bg-amber-300 rounded-full shadow-2xl transition-all duration-1000"></div>
             <div id="starsOverlay" class="absolute inset-0 opacity-0 transition-opacity duration-1000 pointer-events-none">
@@ -49,14 +49,14 @@
         </div>
 
         <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000">
-            <div id="shellSpawnArea" class="absolute inset-0 z-10 pointer-events-auto"></div>
+            <div id="shellSpawnArea" class="absolute inset-0 z-30 pointer-events-auto"></div>
             <div class="absolute top-4 left-12 w-4 h-2 bg-amber-300/60 rounded-full"></div>
         </div>
     </div>
 
     <!-- Main Interactive Scene -->
-    <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md px-4 pb-12">
-        <div class="relative w-full flex justify-center items-end h-72">
+    <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md px-4 pb-12 pointer-events-none">
+        <div class="relative w-full flex justify-center items-end h-72 pointer-events-auto">
             
             <div id="umbrella" class="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-36 z-0 transition-transform duration-500">
                 <div class="w-full h-28 bg-gradient-to-r from-rose-400 via-amber-200 to-rose-400 rounded-t-full shadow-xl relative overflow-hidden border-b-4 border-rose-600">
@@ -106,7 +106,7 @@
     </main>
 
     <!-- Bottom Control Bar -->
-    <footer class="w-full pb-safe pb-4 px-4 z-30 flex flex-col items-center space-y-2">
+    <footer class="w-full pb-safe pb-4 px-4 z-30 flex flex-col items-center space-y-2 pointer-events-auto">
         <div class="w-full max-w-md bg-white p-3 rounded-2xl shadow-xl border border-gray-300 flex justify-around items-center">
             
             <button id="drinkMenuBtn" class="flex flex-col items-center space-y-1 active:scale-95 transition-all text-sky-900">
@@ -151,14 +151,14 @@
                     <span class="text-2xl">🥤</span>
                     <div><p class="font-bold text-sm text-sky-900">Lagoon</p></div>
                 </button>
-                <button class="drink-option p-3 bg-amber-50 border border-amber-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition text-left" data-name="Sunny Citrus" data-color="#facc15" data-icon="🍊">
-                    <span class="text-2xl">🍊</span>
-                    <div><p class="font-bold text-sm text-amber-900">Citrus</p></div>
+                <button class="drink-option p-3 bg-amber-50 border border-amber-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition text-left" data-name="Piña Colada" data-color="#fde047" data-icon="🥥">
+                    <span class="text-2xl">🥥</span>
+                    <div><p class="font-bold text-sm text-amber-900">Colada</p></div>
                 </button>
-                <button class="drink-option p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition text-left" data-name="Minty Breeze" data-color="#10b981" data-icon="🌿">
-                    <span class="text-2xl">🌿</span>
-                    <div><p class="font-bold text-sm text-emerald-900">Breeze</p></div>
-                </button>   
+                <button class="drink-option p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center space-x-3 active:scale-95 transition text-left" data-name="Matcha Fizz" data-color="#34d399" data-icon="🍵">
+                    <span class="text-2xl">🍵</span>
+                    <div><p class="font-bold text-sm text-emerald-900">Matcha</p></div>
+                </button>
             </div>
         </div>
     </div>
@@ -186,6 +186,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="javascript/main.js"></script>
 </body>
 </html>
