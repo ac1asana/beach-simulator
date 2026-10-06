@@ -1,1 +1,2 @@
-# beach-simulator
+# Beach Game
+Just for fun
