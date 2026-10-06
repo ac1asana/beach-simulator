@@ -6,61 +6,7 @@
     <title>Cozy Beach Simulator - Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Fredoka', sans-serif;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            background-color: #38bdf8;
-            transition: background-color 1s ease;
-        }
-
-        /* Animations */
-        @keyframes sip {
-            0%, 100% { transform: rotate(0deg) translateY(0); }
-            50% { transform: rotate(-18deg) translateY(-5px); }
-        }
-        @keyframes blink {
-            0%, 90%, 100% { transform: scaleY(1); }
-            95% { transform: scaleY(0.1); }
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-80px) scale(1.4); opacity: 0; }
-        }
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg) scale(1.05); }
-            75% { transform: rotate(5deg) scale(1.05); }
-        }
-        @keyframes flyAcross {
-            0% { transform: translateX(-60px) translateY(0); }
-            50% { transform: translateX(calc(50vw)) translateY(-20px); }
-            100% { transform: translateX(calc(100vw + 60px)) translateY(0); }
-        }
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .animate-sip { animation: sip 1.6s ease-in-out infinite; transform-origin: bottom right; }
-        .animate-blink { animation: blink 4s infinite; transform-origin: center; }
-        .animate-wiggle { animation: wiggle 0.4s ease-in-out; }
-        .floating-fx { animation: floatUp 1.2s ease-out forwards; }
-        .seagull { animation: flyAcross 14s linear infinite; }
-        .sparkle-star { animation: sparkle 2s ease-in-out infinite; }
-
-        /* Custom scrollbar for mobile drawers */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body id="appBody" class="flex flex-col justify-between items-center h-full w-full relative select-none">
 
