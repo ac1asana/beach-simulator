@@ -33,9 +33,9 @@
         </div>
     </header>
 
-    <!-- Background Environment -->
-    <div id="envContainer" class="absolute inset-0 z-20 flex flex-col transition-all duration-1000">
-        <div id="skyZone" class="w-full h-[44%] bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100 relative overflow-hidden transition-all duration-1000 pointer-events-none">
+    <!-- Background Environment (Restored to z-20 so it renders properly behind UI/characters) -->
+    <div id="envContainer" class="absolute inset-0 z-20 flex flex-col pointer-events-none transition-all duration-1000">
+        <div id="skyZone" class="w-full h-[44%] bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100 relative overflow-hidden transition-all duration-1000">
             <div id="celestialBody" class="absolute top-8 right-12 w-16 h-16 bg-amber-300 rounded-full shadow-2xl transition-all duration-1000"></div>
             <div id="starsOverlay" class="absolute inset-0 opacity-0 transition-opacity duration-1000 pointer-events-none">
                 <div class="absolute top-6 left-12 text-white text-xs">✨</div>
@@ -44,11 +44,11 @@
             <div class="absolute top-10 text-amber-900/30 text-xs tracking-widest">v v</div>
         </div>
 
-        <div class="w-full h-[26%] relative bg-sky-400 transition-colors duration-1000 pointer-events-none" id="oceanZone">
+        <div class="w-full h-[26%] relative bg-sky-400 transition-colors duration-1000" id="oceanZone">
             <canvas id="waveCanvas" class="absolute inset-0 w-full h-full block"></canvas>
         </div>
 
-        <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000 pointer-events-auto">
+        <div id="sandZone" class="w-full h-[30%] bg-gradient-to-b from-amber-100 to-amber-200 relative shadow-inner transition-colors duration-1000">
             <div id="shellSpawnArea" class="absolute inset-0 z-30 pointer-events-auto"></div>
             <div class="absolute top-4 left-12 w-4 h-2 bg-amber-300/60 rounded-full"></div>
         </div>
@@ -137,7 +137,7 @@
 
     <!-- Drink Selection Modal -->
     <div id="drinkModal" class="fixed inset-0 z-50 bg-black/40 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm max-h-[85vh] overflow-y-auto rounded-3xl p-6 shadow-2xl border border-gray-300">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-gray-300">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-sky-900">🍹 Choose Your Drink</h3>
                 <button id="closeDrinkModal" class="text-gray-400 text-xl font-bold px-2">✕</button>
@@ -186,6 +186,7 @@
         </div>
     </div>
 
+    <!-- Ensure your script path matches your folder structure (e.g., js/main.js or javascript/main.js) -->
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
